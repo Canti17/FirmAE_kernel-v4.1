@@ -2082,6 +2082,7 @@ CONFIG_RAS=y
 #
 # CONFIG_ANDROID is not set
 CONFIG_FIRMADYNE=y
+CONFIG_PROCINFO=y
 
 #
 # Firmware Drivers

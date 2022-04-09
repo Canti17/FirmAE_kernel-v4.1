@@ -1,0 +1,1 @@
+obj-$(CONFIG_PROCINFO) += procinfo.o

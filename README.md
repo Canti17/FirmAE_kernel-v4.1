@@ -15,14 +15,25 @@ This module can be configured using the following parameters:
 | procfs    | 1 (on)    | 0, 1   | Create stubs in procfs and emulate behavior |
 | syscall   | 255 (all) | 0 - 16 | Output log bitmask for hooking system calls using the `kprobe` framework, 0 to disable |
 
+Installing cross compilers
+=====
+
+For the cross-compilation, we use the gcc-5 cross-compilers. Execute the following commands:
+>
+	$ sudo add-apt-repository "deb http://cz.archive.ubuntu.com/ubuntu bionic main universe"
+	$ sudo apt install gcc-5-mipsel-linux-gnu
+	$ sudo apt install gcc-5-mips-linux-gnu
+	$ sudo apt install gcc-5-arm-linux-gnueabihf
+    $ sudo ln -s /usr/bin/mipsel-linux-gnu-gcc-5 /usr/bin/mipsel-linux-gnu-gcc
+    $ sudo ln -s /usr/bin/mips-linux-gnu-gcc-5 /usr/bin/mips-linux-gnu-gcc
+	$ sudo ln -s /usr/bin/mips-linux-gnu-gcc-5 /usr/bin/mips-linux-gnu-gcc
+
 Usage
 =====
 
-Since MIPS systems can be either big-endian or little-endian, this kernel
-should be compiled for both endianness. The below instructions produce a little-
-endian (mipsel) kernel, but should be repeated for a big-endian (mipseb) kernel.
+The below instructions produce a MIPS Little-Endian (mipsel) kernel, a MIPS Big-Endian (mipseb) kernel and an ARM Little-Endian (armel) kernel.
 
-Little-Endian (MIPSEL)
+MIPS Little-Endian (mipsel)
 ----------------------
 
 Create the kernel build output directory:
@@ -33,15 +44,15 @@ Copy the configuration file into the build directory:
 
 `cp config.mipsel build/mipsel/.config`
 
-Assuming that the appropriate cross-compiler is installed in `/opt/cross/mipsel-linux-musl`, execute:
+Assuming that the appropriate cross-compiler is installed in `/usr/bin/mipsel-linux-gnu-gcc`, execute:
 
-`make ARCH=mips CROSS_COMPILE=/opt/cross/mipsel-linux-musl/bin/mipsel-linux-musl- O=./build/mipsel -j8`
+`make ARCH=mips CROSS_COMPILE=mipsel-linux-gnu- O=./build/mipsel -j8`
 
 The output kernel image will be generated at the following location:
 
 `build/mipsel/vmlinux`
 
-Big-Endian (MIPSEB)
+MIPS Big-Endian (mipseb)
 -------------------
 
 Create the kernel build output directory:
@@ -52,13 +63,37 @@ Copy the configuration file into the build directory:
 
 `cp config.mipseb build/mipseb/.config`
 
-Assuming that the appropriate cross-compiler is installed in `/opt/cross/mipseb-linux-musl`, execute:
+Assuming that the appropriate cross-compiler is installed in `/usr/bin/mips-linux-gnu-gcc`, execute:
 
-`make ARCH=mips CROSS_COMPILE=/opt/cross/mipseb-linux-musl/bin/mipseb-linux-musl- O=./build/mipseb -j8`
+
+`make ARCH=mips CROSS_COMPILE=mips-linux-gnu- O=./build/mipseb -j8`
 
 The output kernel image will be generated at the following location:
 
 `build/mipseb/vmlinux`
+
+ARM Little-Endian (armel)
+----------------------
+
+Create the kernel build output directory:
+
+`mkdir -p build/armel`
+
+Copy the configuration file into the build directory:
+
+`cp config.armel build/armel/.config`
+
+Assuming that the appropriate cross-compiler is installed in `/usr/bin/arm-linux-gnueabihf-gcc`, execute:
+
+`make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=./build/armel -j8`
+
+or (for the zImage format):
+
+`make zImage ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- O=./build/armel -j8`
+
+The output kernel image will be generated at the following location:
+
+`build/armel/vmlinux`
 
 Notes
 =====

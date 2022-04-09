@@ -1,0 +1,4 @@
+config PROCINFO
+	bool "PROCINFO: Kernel Information"
+	help 
+		Provide kernel information to DECAF.
