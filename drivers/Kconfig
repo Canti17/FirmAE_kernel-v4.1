@@ -184,4 +184,6 @@ source "drivers/android/Kconfig"
 
 source "drivers/firmadyne/Kconfig"
 
+source "drivers/procinfo/Kconfig"
+
 endmenu
